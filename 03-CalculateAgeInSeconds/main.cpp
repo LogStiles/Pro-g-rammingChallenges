@@ -5,6 +5,7 @@
 using namespace std;
 
 struct Date { int d; int m; int y;}; //A struct to represent a single date, with a day, month, and year
+const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 /**
  * Fills out a Date struct with information about the current day
@@ -19,47 +20,29 @@ void getTodaysDate(Date* date) {
 }
 
 /**
- * Compares two dates to see which date occurs later
- * date1, date2 - two Date structs we are comparing
- * Returns 1 if date2 is a later date than date1, -1 if it is the sooner date, and 0 if they are the same date
+ * Counts the number of days between the given date and January 1st, 0 AD
+ * date - a pointer to a Date struct
+ * Returns the number of days calculated
  */
-int isDateLater(Date* date1, Date* date2) {
-    if (date1->y < date2->y) { //if date2's year occurs later, it is the later date
-        return 1;
-    } else if (date1->y > date2->y) { //if date2's year occurs sooner, it is not the later date
-        return -1;
-    } else { //if the two years are equal, we need more information
-
-        if (date1->m < date2->m) { //if date2's month occurs later, it is the later date
-            return 1;
-        } else if (date1->m > date2->m) { //if date2's month occurs sooner, it is not the later date
-            return -1;
-        } else { //if the two months are equal, we need more information
-
-            if (date1->d < date2->d) { //if date2's day occurs later, it is the later date
-                return 1;
-            } else if (date1->d > date2->d) { //if date2's day occurs sooner, it is not the later date
-                return -1;
-            } else { //if the two months are equal, they are the same date
-                return 0;
-            }
-        }
+int countDays(Date* date) {
+    int numDays = date->y * 365; //start with the number of days from previous years
+    for (int i = 0; i < date->m - 1; i++) { //Add the days from the previous months this year
+        numDays += monthDays[i];
     }
+    numDays += date->d; //Add the days from this month
+    return numDays;
 }
 
 /**
  * Asks for the user's birtday and then calculates the number of seconds between then and now
  */
 int main() {
-    const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     Date birthday;
     Date today;
     int tempInt;
     string userInput;
 
     getTodaysDate(&today);
-
-    printf("%d %d %d\n", today.d, today.m, today.y);
 
     printf("I'll calculate your age in seconds. Just let me learn about your birthday!\n");
     
@@ -102,7 +85,7 @@ int main() {
     }
 
     while(true) { //this loop will break when the user gives a valid year
-        printf("What year were you born in?: ", monthDays[birthday.m - 1]);
+        printf("What year were you born in?: ");
         getline(cin, userInput);
 
         try {
@@ -120,6 +103,7 @@ int main() {
         }
     }
 
-    int dateComparison = isDateLater(&birthday, &today);
-    cout << dateComparison << endl;
+    int diffDays = countDays(&today) - countDays(&birthday); //the number of days between today and the user's birthday
+    int ageInSeconds = diffDays * 24 * 60 * 60;
+    printf("You are %d seconds old\n", ageInSeconds);
 }
