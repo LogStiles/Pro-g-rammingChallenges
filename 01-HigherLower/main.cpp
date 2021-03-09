@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 /**
@@ -9,6 +11,8 @@ int main() {
     int goal;
     int guess;
     string userInput;
+
+    srand (time(NULL)); //initialize random seed
 
     while(true) {
         printf("Let's play a game of Higher/Lower.\n");
@@ -36,10 +40,10 @@ int main() {
         printf("You got it!\n");
         printf("Would you like to play again?: ");
         getline(cin, userInput); 
-        if (userInput[0] == 'n' or userInput[1] == 'N') { //if the answer starts with 'N' we'll assume the answer was "No"
+        if (userInput[0] == 'n' or userInput[0] == 'N') { //if the answer starts with 'N' we'll assume the answer was "No"
             break;
         }
     }
-    printf("Bye!");
+    printf("Bye!\n");
     return 0;
 }
