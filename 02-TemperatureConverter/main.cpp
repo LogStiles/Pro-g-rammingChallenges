@@ -41,10 +41,10 @@ int main() {
 
         printf("Would you like to convert another temperature?: ");
         getline(cin, userInput); 
-        if (userInput[0] == 'n' or userInput[1] == 'N') { //if the answer starts with 'N' we'll assume the answer was "No"
+        if (userInput[0] == 'n' or userInput[0] == 'N') { //if the answer starts with 'N' we'll assume the answer was "No"
             break;
         }
     }
 
-    printf("Bye!");
+    printf("Bye!\n");
 }
