@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <vector>
+#include <fstream>
 using namespace std;
 
 /**
@@ -17,12 +19,23 @@ int main() {
     string incorrectLetters;
     string userInput;
     
-    //srand (time(NULL)); //initialize random seed
+    srand (time(NULL)); //initialize random seed
+
+    ifstream file; //load words into list
+    vector<string> words;
+    file.open("words.txt");
+    if (!file) {
+        printf("Unable to open first_names.txt\n");
+        return -1;
+    }
+    while (getline(file,userInput)) {
+        words.push_back(userInput);
+    }
+    file.close();
 
     printf("Let's play a game of Hangman.\n");
     while(true) { //this loop handles the start and end of games
-        thePhrase = "Robin Williams!"; //to do: generate a word randomly
-
+        thePhrase = words.at(rand() % (words.size() - 1)); //choose a word from words randomly
         displayPhrase.clear(); //clear the display phrase in case it's being reused from another game
         for (int i = 0; i < thePhrase.length(); i++) { //initialize the display phrase so it is blank
             if (isalpha(thePhrase[i])) {
